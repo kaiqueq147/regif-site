@@ -11,3 +11,8 @@ next-env.d.ts
 # Vercel
 .vercel
 .env*
+
+# Binário grande do app (baixado no build, nunca commitado)
+public/downloads/*.exe
+public/downloads/regif.exe
+!public/downloads/.gitkeep

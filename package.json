@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/download-regif.js",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "download-exe": "node scripts/download-regif.js"
   },
   "dependencies": {
     "next": "^15.5.0",

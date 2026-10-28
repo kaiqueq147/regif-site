@@ -49,9 +49,9 @@ export const features: Feature[] = [
   },
 ];
 
-// Instalador no GitHub Releases (asset regif.exe da release mais recente).
-export const downloadUrl =
-  "https://github.com/kaiqueq147/regif/releases/latest/download/regif.exe";
+// Download direto do site (arquivo em public/downloads/regif.exe).
+// Em produção no Vercel o arquivo é baixado no build a partir da release mais recente.
+export const downloadUrl = "/downloads/regif.exe";
 
 // Passos da demo animada (FlowDemo). A cena de cada passo está em FlowScenes.tsx.
 export type FlowStep = { title: string; desc: string };
