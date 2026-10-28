@@ -1,26 +1,281 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Identidade da logomarca: azul elétrico -> ciano + prata, sobre fundo quase preto azulado. */
+  --color-canvas: #080b12;
+  --color-bg: #0a0d14;
+  --color-surface: #10141d;
+  --color-surface-2: #171c28;
+  --color-surface-3: #212736;
+  --color-border: #252c3b;
+  --color-border-soft: #1c2230;
+  --color-text: #e6eaf2;
+  --color-muted: #8a93a6;
+
+  --color-accent: #2b8cff;
+  --color-accent-hi: #5cc8ff;
+  --color-sky: #6fb4ff;
+  --color-cyan: #13e3ff;
+  --color-green: #39d353;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Itálico largo e arredondado, como o "regif" da logo. */
+  --font-display: var(--font-exo), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-playhead: playhead 6s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
+  --animate-blob: blob 18s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes playhead {
+  0%, 100% { left: 14%; }
+  50% { left: 82%; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.1); }
+  66% { transform: translate(-30px, 20px) scale(0.95); }
+}
+
+/* ---------- Demo animada (FlowDemo / FlowScenes) ----------
+   Cada cena é remontada (key) a cada passo, então as animações abaixo rodam
+   uma vez, em sequência, via animation-delay. `both` esconde o elemento até
+   o delay e deixa o estado final preso no fim. */
+@property --pct {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes flow-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes flow-scroll { to { transform: translateX(-50%); } }
+@keyframes flow-fade-up {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes flow-pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes flow-press {
+  0%, 100% { transform: translateY(0); box-shadow: 0 9px 0 #07080b, 0 18px 30px rgb(0 0 0 / 0.55); }
+  35%, 60% { transform: translateY(7px); box-shadow: 0 2px 0 #07080b, 0 6px 14px rgb(0 0 0 / 0.5), 0 0 40px rgb(43 140 255 / 0.55); }
+}
+@keyframes flow-ripple {
+  from { opacity: 0.7; transform: scale(0.5); }
+  to { opacity: 0; transform: scale(2.4); }
+}
+@keyframes flow-grow-x { from { width: 0; opacity: 0; } to { width: var(--w, 55%); opacity: 1; } }
+@keyframes flow-fly {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-30px, -150px) scale(0.55); }
+}
+@keyframes flow-crop {
+  from { top: 0; right: 0; bottom: 0; left: 0; }
+  to { top: 18%; right: 20%; bottom: 8%; left: 16%; }
+}
+@keyframes flow-trim-l { from { left: 0; } to { left: 14%; } }
+@keyframes flow-trim-r { from { right: 0; } to { right: 20%; } }
+@keyframes flow-type { from { width: 0; } to { width: 100%; } }
+@keyframes flow-chip {
+  0%, 100% { background: var(--color-surface-2); color: var(--color-muted); border-color: var(--color-border); }
+  12%, 88% { background: color-mix(in srgb, var(--color-accent) 18%, transparent); color: var(--color-accent-hi); border-color: color-mix(in srgb, var(--color-accent) 60%, transparent); }
+}
+@keyframes flow-count { from { --pct: 0; } to { --pct: 100; } }
+@keyframes flow-strike { to { transform: scaleX(1); } }
+
+/* Screenshot animado do hero (AppMock): overlays em % sobre a imagem. */
+@keyframes mock-crop {
+  0%, 12% { top: 0; right: 0; bottom: 0; left: 0; }
+  42%, 72% { top: 14%; right: 18%; bottom: 10%; left: 16%; }
+  100% { top: 0; right: 0; bottom: 0; left: 0; }
+}
+@keyframes mock-ring {
+  0% { opacity: 0.8; transform: scale(0.8); }
+  70%, 100% { opacity: 0; transform: scale(2); }
+}
+@keyframes mock-shine {
+  0%, 55% { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(320%) skewX(-18deg); }
+}
+.mock-crop { animation: mock-crop 9s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.mock-ring { animation: mock-ring 1.8s ease-out infinite; }
+.mock-shine { animation: mock-shine 7s ease-in-out infinite; }
+
+/* Demo da legenda (CaptionDemo): um ciclo único de 12s em 4 quartos —
+   digitar (0-25%), estilo (25-50%), posição (50-75%), salvar (75-100%).
+   Estado base (sem animação / reduzir movimento) = legenda pronta em barra branca. */
+@keyframes cap-type {
+  0%, 3% { clip-path: inset(0 100% 0 0); }
+  22%, 96% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes cap-caret {
+  0%, 3% { left: 0; opacity: 1; }
+  22% { left: 100%; opacity: 1; }
+  27%, 100% { left: 100%; opacity: 0; }
+}
+@keyframes cap-bar {
+  0%, 3% { max-height: 0; opacity: 0; }
+  6%, 37% { max-height: 3rem; opacity: 1; }
+  40%, 97% { max-height: 0; opacity: 0; }
+  100% { max-height: 0; opacity: 0; }
+}
+@keyframes cap-impact {
+  0%, 37% { opacity: 0; top: 7%; }
+  41%, 60% { opacity: 1; top: 7%; }
+  70%, 95% { opacity: 1; top: 76%; }
+  99%, 100% { opacity: 0; top: 76%; }
+}
+@keyframes cap-swap-a { 0%, 37% { opacity: 1; } 39%, 97% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes cap-swap-b { 0%, 37% { opacity: 0; } 39%, 97% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cap-pos-a { 0%, 61% { opacity: 1; } 63%, 97% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes cap-pos-b { 0%, 61% { opacity: 0; } 63%, 97% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cap-ring-field {
+  0%, 2% { border-color: var(--color-border); }
+  4%, 24% { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(43 140 255 / 0.25); }
+  27%, 100% { border-color: var(--color-border); }
+}
+@keyframes cap-ring-style {
+  0%, 29% { border-color: var(--color-border); }
+  31%, 43% { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(43 140 255 / 0.25); }
+  46%, 100% { border-color: var(--color-border); }
+}
+@keyframes cap-ring-pos {
+  0%, 54% { border-color: var(--color-border); }
+  56%, 68% { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(43 140 255 / 0.25); }
+  71%, 100% { border-color: var(--color-border); }
+}
+@keyframes cap-save {
+  0%, 77% { transform: none; box-shadow: none; }
+  80%, 90% { transform: scale(1.06); box-shadow: 0 0 22px rgb(57 211 83 / 0.55); }
+  93%, 100% { transform: none; box-shadow: none; }
+}
+@keyframes cap-badge {
+  0%, 81% { opacity: 0; transform: translateY(-6px) scale(0.9); }
+  85%, 95% { opacity: 1; transform: none; }
+  98%, 100% { opacity: 0; transform: none; }
+}
+@keyframes cap-step {
+  0% { background: color-mix(in srgb, var(--color-accent) 14%, transparent); border-color: color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-text); }
+  24% { background: color-mix(in srgb, var(--color-accent) 14%, transparent); border-color: color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-text); }
+  26%, 100% { background: transparent; border-color: var(--color-border); color: var(--color-muted); }
+}
+.cap-anim [class*="cap-"] { animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: linear; }
+.cap-type { animation-name: cap-type; animation-timing-function: steps(19, end) !important; }
+.cap-caret { animation-name: cap-caret; animation-timing-function: steps(19, end) !important; }
+.cap-bar { animation-name: cap-bar; }
+.cap-impact { animation-name: cap-impact; animation-timing-function: ease-in-out !important; }
+.cap-swap-a { animation-name: cap-swap-a; }
+.cap-swap-b { animation-name: cap-swap-b; }
+.cap-pos-a { animation-name: cap-pos-a; }
+.cap-pos-b { animation-name: cap-pos-b; }
+.cap-ring-field { animation-name: cap-ring-field; }
+.cap-ring-style { animation-name: cap-ring-style; }
+.cap-ring-pos { animation-name: cap-ring-pos; }
+.cap-save { animation-name: cap-save; }
+.cap-badge { animation-name: cap-badge; }
+.cap-step { animation-name: cap-step; border-color: var(--color-border); color: var(--color-muted); }
+.cap-impact, .cap-swap-b, .cap-pos-b, .cap-badge { opacity: 0; }
+
+.flow-track { animation: flow-scroll 7s linear infinite; }
+.flow-in { animation: flow-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.flow-pop { animation: flow-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.flow-keycap { animation: flow-press 1.1s ease-in-out 0.7s both; }
+.flow-ripple { animation: flow-ripple 1s ease-out 0.95s both; }
+.flow-bracket { animation: flow-grow-x 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.8s both; }
+.flow-fly { animation: flow-fly 1.3s ease-in 3.2s both; }
+.flow-crop { animation: flow-crop 1.6s cubic-bezier(0.65, 0, 0.35, 1) 2.2s both; }
+.flow-trim-l { animation: flow-trim-l 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.5s both; }
+.flow-trim-r { animation: flow-trim-r 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.9s both; }
+.flow-type { animation: flow-type 2s steps(19, end) 4.4s both; }
+.flow-chip { animation: flow-chip 2s ease-in-out both; }
+.flow-bar { transform-origin: left; animation: flow-fill 7s linear forwards; }
+.flow-export { transform-origin: left; animation: flow-fill 2.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both; }
+.flow-pct { animation: flow-count 2.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both; }
+.flow-pct::after { counter-reset: p var(--pct); content: counter(p) "%"; }
+.flow-strike { transform-origin: left; transform: scaleX(0); animation: flow-strike 0.5s ease-out forwards; }
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    color: #fff;
+  }
+  h1, h2 {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+  kbd {
+    display: inline-block;
+    padding: 0.05em 0.45em;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    border-bottom-width: 2px;
+    background: var(--color-surface-2);
+    font-family: var(--font-sans);
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--color-text);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility grad-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-accent),
+    var(--color-sky) 55%,
+    var(--color-cyan)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  padding-right: 0.08em; /* itálico: evita cortar a ponta da última letra */
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

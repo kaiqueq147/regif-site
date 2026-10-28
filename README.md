@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# regif — site
 
-## Getting Started
+Landing page de vendas do **regif**, construída com **Next.js (App Router)**, **React 19**, **TypeScript** e **Tailwind CSS v4**.
 
-First, run the development server:
+## Rodar localmente
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install      # já instalado pelo scaffold
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Comando         | O que faz                                  |
+| --------------- | ------------------------------------------ |
+| `npm run dev`   | Servidor de desenvolvimento com hot reload |
+| `npm run build` | Build de produção                          |
+| `npm run start` | Sobe o build de produção                   |
+| `npm run lint`  | ESLint                                     |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura
 
-## Learn More
+```
+app/
+  layout.tsx        # fonte Inter, metadata/SEO, <html>/<body>
+  page.tsx          # monta as seções da landing
+  globals.css       # tokens de design (@theme), keyframes e utilitários
+  icon.svg          # favicon da marca (detectado pelo Next)
+components/
+  Nav.tsx           # navbar fixa + menu mobile (client)
+  Hero.tsx          # headline + CTAs
+  AppMock.tsx       # mock animado da janela do editor
+  Stats.tsx         # números com count-up (client)
+  Features.tsx      # grade de recursos
+  HowItWorks.tsx    # 3 passos
+  Formats.tsx       # formatos de saída
+  Pricing.tsx       # planos Free / Pro / Studio
+  Faq.tsx           # perguntas frequentes (<details>)
+  DownloadCta.tsx   # chamada final de download
+  Footer.tsx        # rodapé
+  SectionHead.tsx   # cabeçalho reutilizável de seção
+  Reveal.tsx        # animação de entrada no scroll (IntersectionObserver)
+  Brand.tsx         # logo
+  Icons.tsx         # ícones SVG inline
+lib/
+  content.ts        # TODO o conteúdo (textos, features, planos, FAQ) num só lugar
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Como manter
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Textos, recursos, planos e FAQ:** edite apenas `lib/content.ts`. As seções renderizam a partir desses dados.
+- **Cores e animações:** ajuste os tokens em `app/globals.css` no bloco `@theme` (ex.: `--color-accent`). As classes utilitárias (`bg-accent`, `text-muted`, etc.) seguem automaticamente.
+- **Nova seção:** crie um componente em `components/` e adicione em `app/page.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A paleta segue o app regif (azul `#6c8cff`, rosa `#f472b6`, ciano `#22d3ee`, verde `#39d353`).
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Compatível com Vercel (zero config) ou qualquer host Node. Para exportação estática, rode `npm run build`.
