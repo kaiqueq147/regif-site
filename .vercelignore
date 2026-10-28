@@ -1,0 +1,13 @@
+# Evita arquivos grandes que estouram o limite do Vercel (100MB)
+public/downloads/*.exe
+public/downloads/regif.exe
+
+# Caches e builds locais
+.next/
+node_modules/
+*.tsbuildinfo
+
+# Env e segredos
+.env
+.env.local
+.env.*.local
