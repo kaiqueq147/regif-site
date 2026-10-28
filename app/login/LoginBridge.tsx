@@ -81,10 +81,11 @@ export function LoginBridge() {
         setPhase("ready");
         return;
       }
+      console.error("login regif:", code, err);
       setPhase("error");
       setMessage(code === "auth/popup-blocked"
         ? "O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente de novo."
-        : `Não foi possível entrar (${code || "erro desconhecido"}).`);
+        : "Não foi possível entrar no regif. Tente de novo.");
     }
   }
 
