@@ -102,6 +102,8 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("[download-regif] FAILED:", err.message || err);
-  process.exit(1);
+  console.warn("[download-regif] WARNING (non-fatal):", err.message || err);
+  console.warn("[download-regif] Continuing build without local exe (using external download link).");
+  // Do not fail the build — the site now uses a direct external link
+  process.exit(0);
 });
