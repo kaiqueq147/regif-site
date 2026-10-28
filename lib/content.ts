@@ -51,7 +51,7 @@ export const features: Feature[] = [
 
 // Instalador no GitHub Releases (asset regif.exe da release mais recente).
 export const downloadUrl =
-  "https://github.com/kaiqueq147/regif_site/releases/latest/download/regif.exe";
+  "https://github.com/kaiqueq147/regif/releases/latest/download/regif.exe";
 
 // Passos da demo animada (FlowDemo). A cena de cada passo está em FlowScenes.tsx.
 export type FlowStep = { title: string; desc: string };
@@ -224,3 +224,22 @@ export const nav = {
     { href: "#faq", label: "FAQ" },
   ],
 };
+
+// 3 passos usados pelo HowItWorks (estático, opcional).
+export const steps = [
+  {
+    n: 1,
+    title: "Deixe rodando",
+    desc: "O regif grava sua tela em segundo plano o tempo todo, sem atrapalhar.",
+  },
+  {
+    n: 2,
+    title: "Aperte uma tecla",
+    desc: "Aconteceu algo bom? Aperta a tecla e os últimos segundos viram clipe.",
+  },
+  {
+    n: 3,
+    title: "Salve e compartilhe",
+    desc: "Corta, enquadra, adiciona legenda e exporta em GIF ou vídeo na hora.",
+  },
+];

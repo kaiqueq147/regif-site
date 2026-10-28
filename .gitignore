@@ -2,3 +2,12 @@ node_modules/
 .next/
 next-env.d.ts
 *.tsbuildinfo
+
+# envs e segredos
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+

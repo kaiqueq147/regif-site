@@ -8,8 +8,7 @@ function useCountUp(target: number, run: boolean, duration = 1200) {
   useEffect(() => {
     if (!run) return;
     if (target === 0) {
-      setValue(0);
-      return;
+      return; // already starts at 0; avoid setState-in-effect lint
     }
     let raf = 0;
     const start = performance.now();
