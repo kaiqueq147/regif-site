@@ -49,9 +49,10 @@ export const features: Feature[] = [
   },
 ];
 
-// Download direto da release 0.1
+// Download direto da release mais recente no GitHub (o .exe passa do limite
+// de 100MB da Vercel, então não vai em public/downloads).
 export const downloadUrl =
-  "https://github.com/kaiqueq147/regif-site/releases/download/0.1/regif.exe";
+  "https://github.com/kaiqueq147/regif-site/releases/latest/download/regif.exe";
 
 // Passos da demo animada (FlowDemo). A cena de cada passo está em FlowScenes.tsx.
 export type FlowStep = { title: string; desc: string };
